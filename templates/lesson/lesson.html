@@ -12,6 +12,7 @@
         {% endif %}
     </div>
     <div id="queue">
+        <div class="spinner-border" role="status"><span class="visually-hidden"></span></div>
     </div>
 {% endblock %}
 
@@ -22,7 +23,7 @@ const room = window.location.pathname.slice(1)
 var socket = io();
 
 function update(data) {
-    $("#queue").html("<div class=\"spinner-border\" role=\"status\"><span class=\"visually-hidden\">Loading...</span></div>");
+    $("#queue").html("");
     data.forEach(element => {
         $("#queue").append("<p>" + element + "</p>")
     });
@@ -40,6 +41,7 @@ $(document).ready(function() {
 
 $("#getin").on("click", () => {
     socket.emit("getin", {"lesson_id": room})
+    $("#queue").html("<div class=\"spinner-border\" role=\"status\"><span class=\"visually-hidden\"></span></div>")
 })
 
 $("#next").on("click", () => {
