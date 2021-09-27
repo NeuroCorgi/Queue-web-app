@@ -42,17 +42,9 @@ def lesson(id):
     session = db.create_session()
     lesson = session.query(models.lesson.Lesson).filter(models.lesson.Lesson.id == id).first()
 
-    return render_template("lesson.html", lesson=lesson, title=lesson.name, current_user=current_user)
-
-
-@blueprint.route('/<int:id>/queue')
-def queue(id):
-    session = db.create_session()
-    queue = session.query(models.queue.Node).\
-                    filter(models.queue.Node.lesson.id == id).\
-                    order_by(models.queue.Node.time.asc()).\
-                    all()
-    return jsonify(queue)
+    if lesson:
+        return render_template("lesson.html", lesson=lesson, title=lesson.name, current_user=current_user)
+    return abort(404)
 
 
 @blueprint.route('/<int:id>/delete')
