@@ -38,7 +38,7 @@ secret_key = str(uuid4())
 app.config['SECRET_KEY'] = secret_key
 app.config["WTF_CSRF_SECRET_KEY"] = secret_key
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
-app.config['DATABASE_NAME'] = getenv("DATABASE_URL")
+app.config['DATABASE_NAME'] = getenv("DATABASE_URL").replace('postgres://', 'postgresql://')
 
 db.global_init(app.config["DATABASE_NAME"])
     
