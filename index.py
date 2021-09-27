@@ -1,3 +1,4 @@
+from os import environ
 from uuid import uuid4
 from datetime import timedelta
 
@@ -37,9 +38,9 @@ secret_key = str(uuid4())
 app.config['SECRET_KEY'] = secret_key
 app.config["WTF_CSRF_SECRET_KEY"] = secret_key
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
-app.config['DATABASE_NAME'] = 'db/db.sqlite'
+app.config['DATABASE_NAME'] = environ.get("DATABASE_URL")
 
-db.global_init('db/db.sqlite')
+db.global_init(app.config["DATABASE_NAME"])
     
 import auth
 app.register_blueprint(auth.blueprint)
