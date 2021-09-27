@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.search.label }}<br>
+                {{ form.search(class="form-control") }}<br>
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+        <ul>
+        {% for lesson in lessons %}
+            <li><a href="/{{ lesson.id }}">{{ lesson.name }}</a> {{ lesson.creator.name }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

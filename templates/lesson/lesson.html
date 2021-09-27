@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ lesson.name }}</h1>
+    {% if lesson.creator == current_user.id %}
+    <a href="/{{ lesson.id }}/delete">Delete</a>
+    <a id="next">Next</a>
+    {% endif %}
+    <a id="getin">Get in</a>
+    <!--  -->
+    <div id="queue">
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/socket.io@4.2.0/client-dist/socket.io.min.js" integrity="sha256-Kz7CzdTU8TMyn59YIxWrJzMGuaaOBxi6iLs2oPuHm94=" crossorigin="anonymous"></script>
+<script>
+const room = window.location.pathname.slice(1)
+var socket = io();
+
+function update(data) {
+    $("#queue").html("");
+    data.forEach(element => {
+        $("#queue").append("<p>" + element + "</p>")
+    });
+}
+
+$(document).ready(function() {
+    socket.emit("join", {"lesson_id": room});
+    socket.on("init", (data) => {
+        update(data)
+    })
+    socket.on("update", (data) => {
+        update(data)
+    })
+})
+
+$("#getin").on("click", () => {
+    socket.emit("getin", {"lesson_id": room})
+})
+
+$("#next").on("click", () => {
+    socket.emit("next", {"lesson_id": room})
+})
+</script>
+{% endblock %}
