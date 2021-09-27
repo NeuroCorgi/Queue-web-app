@@ -38,7 +38,8 @@ def register():
         )
         session.add(user)
         session.commit()
-        return redirect('/login')
+        login_user(user, remember=True)
+        return redirect('/')
     return render_template('signup.html', title='Sign up', form=form, current_user=current_user)
 
 
@@ -61,4 +62,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect('/jobs')
+    return redirect('/')
